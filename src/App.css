@@ -21,7 +21,7 @@
 }
 
 .add {
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 .add-input {
@@ -49,10 +49,30 @@
 
 .delete {
   color: #c82333;
+  margin: 0px 10px;
+  cursor: pointer;
 }
 
 .todo-item {
   padding-bottom: 10px;
   margin-bottom: 10px;
   border-bottom: 1px solid #d4d4d4;
+  display: flex;
+  align-items: center;
+}
+
+.item-completed {
+  margin-right: 10px;
+}
+
+.completed {
+  text-decoration: line-through;
+}
+
+.item-text {
+  padding: 10px;
+  font-size: 1em;
+  width: calc(100% - 90px);
+  /* border: none; */
+  resize: vertical;
 }

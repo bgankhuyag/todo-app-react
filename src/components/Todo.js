@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import TodoItem from './TodoItem'
 import '../App.css'
 
-function Todo({items, addItem}) {
+function Todo({items, addItem, updateItem, updateCompleted, deleteItem}) {
   const [newItem, setNewItem] = useState('');
 
   const handleChange = (e) => {
@@ -19,7 +19,7 @@ function Todo({items, addItem}) {
           <input type="text" placeholder="Enter New Item" className="add-input" value={newItem} onChange={handleChange} />
           <button className="add-button" type="submit">Add Item</button>
         </form>
-        {items.map((item) => <TodoItem key={item.id} item={item}/>)}
+        {items.map((item) => <TodoItem key={item.id} item={item} updateItem={updateItem} updateCompleted={updateCompleted} deleteItem={deleteItem} />)}
       </div>
     </div>
   );

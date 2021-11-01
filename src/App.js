@@ -22,8 +22,9 @@ function App() {
     axios.get(
       `${url}/get_items`
     ).then(res => {
-      console.log(res.data.data);
-      setItems(res.data.data);
+      if (res.data.data) {
+        setItems(res.data.data);
+      }
     })
   }
 
@@ -36,9 +37,8 @@ function App() {
         `${url}/new_item`,
         itemData
       ).then(res => {
-        console.log(res.data);
         if (res.data.type === 'error') {
-          alert('There was an error adding new item.');
+          alert(res.data.message);
         } else {
           setItems([...items, res.data.data[0]]);
         }
@@ -46,9 +46,64 @@ function App() {
     }
   }
 
+  const updateItem = (item, id) => {
+    if (item !== "" && id !== "") {
+      var itemData = new FormData();
+      itemData.append('item', item)
+      axios.put(
+        `${url}/update_item/${id}`,
+        itemData
+      ).then(res => {
+        console.log(res.data);
+        if (res.data.type === 'error') {
+          alert(res.data.message);
+        }
+      })
+    }
+  }
+
+  const updateCompleted = (completed, id) => {
+    completed = completed ? 1 : 0;
+    if (completed !== "" && id !== "") {
+      var itemData = new FormData();
+      itemData.append('completed', completed)
+      axios.put(
+        `${url}/update_completed/${id}`,
+        itemData
+      ).then(res => {
+        if (res.data.type === 'error') {
+          alert(res.data.message);
+        } else {
+          let tempItems = [...items];
+          let itemIndex = tempItems.findIndex((elem) => elem.id===id);
+          tempItems[itemIndex].completed = completed;
+          setItems(tempItems);
+        }
+      })
+    }
+  }
+
+  const deleteItem = (id) => {
+    console.log(id);
+    if (id !== "") {
+      axios.delete(
+        `${url}/delete_item/${id}`,
+      ).then(res => {
+        if (res.data.type === 'error') {
+          alert(res.data.message);
+        } else {
+          let tempItems = [...items];
+          let itemIndex = tempItems.findIndex((elem) => elem.id===id);
+          tempItems.splice(itemIndex, 1);
+          setItems(tempItems);
+        }
+      })
+    }
+  }
+
   return (
     <div className="App">
-      <Todo items={items} addItem={addItem} />
+      <Todo items={items} addItem={addItem} updateItem={updateItem} updateCompleted={updateCompleted} deleteItem={deleteItem} />
     </div>
   );
 }
